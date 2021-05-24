@@ -6,6 +6,7 @@ import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Input } from "@material-ui/core";
 import ImageUpload from "./ImageUpload";
+import InstagramEmbed from "react-instagram-embed";
 
 function getModalStyle() {
   const top = 50;
@@ -95,13 +96,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* <ImageUpload username={user.displayName}/> */}
-      {user?.displayName ? (
-        <ImageUpload username={user.displayName} />
-      ) : (
-        <h3>Login to Upload</h3>
-      )}
-
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -188,34 +182,50 @@ function App() {
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png"
           alt=""
         />
+
+        {user ? (
+          <Button onClick={() => auth.signOut()}>Logout</Button>
+        ) : (
+          <div className="app_loginConatiner">
+            <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+            <Button onClick={() => setOpen(true)}>Sign Up</Button>
+          </div>
+        )}
       </div>
 
-      {user ? (
-        <Button onClick={() => auth.signOut()}>Logout</Button>
-      ) : (
-        <div className="app_loginConatiner">
-          <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
-          <Button onClick={() => setOpen(true)}>Sign Up</Button>
-        </div>
-      )}
-
-      <h1>hello there!!!</h1>
+      {/* <h1>hello there!!!</h1> */}
       {/* header */}
+      <div className="app_posts">
+        {posts.map(({ id, post }) => (
+          <Post
+            key={id}
+            username={post.username}
+            caption={post.caption}
+            imageUrl={post.imageUrl}
+          />
+        ))}
+      </div>
 
-      {posts.map(({ id, post }) => (
-        <Post
-          key={id}
-          username={post.username}
-          caption={post.caption}
-          imageUrl={post.imageUrl}
-        />
-      ))}
+      <InstagramEmbed
+        // url="https://instagram.com/p/B_uf9dmAGPw/"
+        url="https://www.instagram.com/p/CPQuvvpDR9VuQ7KaWM--64HgxGmO1zjKtChU0Q0/"
+        clientAccessToken="123|456"
+        maxWidth={320}
+        hideCaption={false}
+        containerTagName="div"
+        protocol=""
+        injectScript
+        onLoading={() => {}}
+        onSuccess={() => {}}
+        onAfterRender={() => {}}
+        onFailure={() => {}}
+      />
 
-      {/* <Post
-        username="Mohit"
-        caption="wow!! it's amazing...."
-        imageUrl="https://i.pinimg.com/originals/55/9d/50/559d509bdf0a86ba9424f295f7c1de2e.png"
-      /> */}
+      {user?.displayName ? (
+        <ImageUpload username={user.displayName} />
+      ) : (
+        <h3 className="heading1">Login to Upload</h3>
+      )}
 
       {/* posts */}
       {/* posts */}
